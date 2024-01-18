@@ -18,9 +18,9 @@ final router = GoRouter(
           parentNavigatorKey: _rootNavigationKey,
           navigatorKey: _shellNavigationKey,
 
-
           pageBuilder: (context, state, child) {
             int index = 0;
+            
             if (state.fullPath == Routes.homescreen.path) {
               index = 0;
             } else if (state.fullPath == Routes.staticsscreen.path) {
@@ -31,8 +31,8 @@ final router = GoRouter(
               index = 3;
             }
 
-
-            return CupertinoPage(child: Navigation(selectedIndex: index, child: child));
+            return CupertinoPage(
+                child: Navigation(selectedIndex: index, child: child));
           },
           routes: [
             GoRoute(
