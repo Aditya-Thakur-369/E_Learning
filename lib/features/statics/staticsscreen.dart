@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class StaticsScreen extends StatelessWidget {
   const StaticsScreen({super.key});
@@ -6,10 +7,20 @@ class StaticsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-         
+          Spacer(),
+          Center(
+            child: Text(
+              "Statics Screen",
+              style: GoogleFonts.plusJakartaSans(
+                  // color: Colors.grey.shade500,
+                  fontSize: 40,
+                  fontWeight: FontWeight.w400),
+            ),
+          ),
+          Spacer()
         ],
       ),
     );

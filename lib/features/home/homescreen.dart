@@ -2,7 +2,10 @@ import 'package:e_learning/common/common_color.dart';
 import 'package:e_learning/features/home/controller/course_controller.dart';
 import 'package:e_learning/features/home/model/course_model.dart';
 import 'package:e_learning/features/home/screen/fade-animation.dart';
+import 'package:e_learning/router/router.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -17,120 +20,148 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 60,
-          ),
-          FadeInAnimation(delay: 0.8, child: TopBar()),
-          const SizedBox(
-            height: 20,
-          ),
-          FadeInAnimation(
-            delay: 1,
-            child: Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: Align(
-                alignment: Alignment.topLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Nice Streak",
-                      style: GoogleFonts.plusJakartaSans(
-                          color: Colors.black,
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold),
-                    ),
-                    Text(
-                      "Andrew",
-                      style: GoogleFonts.plusJakartaSans(
-                          color: Colors.black,
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(
+                  height: 60,
                 ),
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: SizedBox(
-              height: 270,
-              width: double.infinity,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: CourseController().course_list.length,
-                itemBuilder: (context, index) {
-                  var color1 = CourseController().color_list1[index];
-                  var color = CourseController().color_list[index];
-                  var data = CourseController().course_list[index];
-
-                  return FadeInAnimation(
-                    delay: 1.5,
-                    child: CourseCard(
-                      data: data,
-                      color: color,
-                      color1: color1,
+                const FadeInAnimation(delay: 0.8, child: TopBar()),
+                const SizedBox(
+                  height: 20,
+                ),
+                FadeInAnimation(
+                  delay: 1,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Nice Streak",
+                            style: GoogleFonts.plusJakartaSans(
+                                fontSize: 40, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            "Andrew",
+                            style: GoogleFonts.plusJakartaSans(
+                                fontSize: 40, fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
-                  );
-                },
-              ),
-            ),
-          ),
-          FadeInAnimation(
-            delay: 2,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
-              child: Row(
-                children: [
-                  Text(
-                    "Today Classes",
-                    style: GoogleFonts.plusJakartaSans(
-                        color: Colors.black,
-                        fontSize: 26,
-                        fontWeight: FontWeight.bold),
                   ),
-                  const Spacer(),
-                  IconButton(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Iconsax.arrow_right_1,
-                        size: 30,
-                      ))
-                ],
-              ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: SizedBox(
+                    height: 270,
+                    width: double.infinity,
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: CourseController().course_list.length,
+                      itemBuilder: (context, index) {
+                        var color1 = CourseController().color_list1[index];
+                        var color = CourseController().color_list[index];
+                        var data = CourseController().course_list[index];
+
+                        return FadeInAnimation(
+                          delay: 1.5,
+                          child: CourseCard(
+                            data: data,
+                            color: color,
+                            color1: color1,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                FadeInAnimation(
+                  delay: 2,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(right: 20, left: 20, top: 10),
+                    child: Row(
+                      children: [
+                        Text(
+                          "Today Classes",
+                          style: GoogleFonts.plusJakartaSans(
+                              fontSize: 26, fontWeight: FontWeight.bold),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            context.go(Routes.planningscreen.path);
+                          },
+                          icon: const Icon(
+                            Iconsax.arrow_right_1,
+                            size: 30,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+              ],
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          SizedBox(
-            height: 230,
-            child: ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemCount: CourseController().class_list.length,
-              itemBuilder: (context, index) {
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
                 var color = CourseController().class_color[index];
                 var data = CourseController().class_list[index];
-                return Padding(
-                  padding:
-                      const EdgeInsets.only(bottom: 10, right: 15, left: 15),
-                  child: FadeInAnimation(
-                    delay: 2.5,
-                    child: ClassCard(
-                      data: data,
-                      color: color,
+                return Hero(
+                  tag: index,
+                  transitionOnUserGestures: true,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.only(bottom: 10, right: 15, left: 15),
+                    child: FadeInAnimation(
+                      delay: 2.5,
+                      child: ClipRRect(
+                        child: CupertinoContextMenu(
+                          actions: [
+                            CupertinoContextMenuAction(
+                              child: Text("View Planning"),
+                              onPressed: () {
+                                context.go(Routes.planningscreen.path);
+                                context.pop();
+                              },
+                            ),
+                            CupertinoContextMenuAction(
+                              child: Text("Back"),
+                              onPressed: () {
+                                context.pop();
+                              },
+                            )
+                          ],
+                          child: Material(
+                            child: ClassCard(
+                              data: data,
+                              color: color,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 );
               },
+              childCount: CourseController().class_list.length,
             ),
-          )
+          ),
         ],
       ),
     );
@@ -183,7 +214,7 @@ class _CourseCardState extends State<CourseCard> {
               ),
               const Spacer(),
               AnimatedContainer(
-                duration: Duration(milliseconds: 500),
+                duration: const Duration(milliseconds: 500),
                 child: Text(
                   // " ${data.days}",
                   "${widget.data.days}",
@@ -282,9 +313,11 @@ class _TopBarState extends State<TopBar> {
         const Spacer(),
         ElevatedButton(
             style: ButtonStyle(
-                padding: const MaterialStatePropertyAll(
-                    EdgeInsets.only(top: 12, bottom: 12, right: 25, left: 25)),
-                backgroundColor: MaterialStatePropertyAll(Commoncolor().black)),
+              padding: const MaterialStatePropertyAll(
+                  EdgeInsets.only(top: 12, bottom: 12, right: 25, left: 25)),
+              backgroundColor: MaterialStatePropertyAll(Commoncolor().black),
+              // shadowColor: MaterialStatePropertyAll(Colors.grey.shade100)
+            ),
             onPressed: () {},
             child: Text(
               "Connext to class",
@@ -313,7 +346,6 @@ class ClassCard extends StatefulWidget {
 class _ClassCardState extends State<ClassCard> {
   @override
   Widget build(BuildContext context) {
-
     return Container(
       height: 100,
       width: 400,

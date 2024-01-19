@@ -28,6 +28,7 @@ class Navigation extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
+              decoration: BoxDecoration(color: Colors.white),
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
               child: SizedBox(
                 height: 50,
@@ -40,7 +41,7 @@ class Navigation extends StatelessWidget {
                     selectedIndex == 2
                         ? Iconsax.calendar_25
                         : Iconsax.calendar_search4,
-                    selectedIndex == 3 ? Iconsax.message5 : Iconsax.message,
+                    selectedIndex == 3 ? Iconsax.setting_2 : Iconsax.setting_2,
                   ],
                   currentIndex: selectedIndex,
                   onItemTap: (index) => context.go(_indexToTab(index)),
@@ -143,7 +144,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
                           e,
                           color: widget.currentIndex == index
                               ? widget.selectedColor
-                              : Colors.black,
+                              : Colors.grey,
                           size: 30,
                         ),
                       ),
