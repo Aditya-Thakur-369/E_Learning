@@ -39,6 +39,8 @@ dependencies:
   iconsax: ^0.0.8
   google_fonts: ^6.1.0
   flutter_screenutil: ^5.9.0
+  flutter_staggered_animations: ^1.1.1
+  provider: ^6.1.1
 
 dev_dependencies:
   flutter_test:

@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:e_learning/common/common_color.dart';
 import 'package:e_learning/features/planning/models/day_model.dart';
 import 'package:e_learning/features/planning/models/task_model.dart';
 import 'package:flutter/material.dart';
 
 class Controller {
+
   List<String> time_list = [
     '8:00 AM',
     '9:00 AM',
@@ -64,6 +67,14 @@ class Controller {
         tiitle: 'Animation in Protopie'),
   ];
   List<Color> task_color = [
+    Commoncolor().yellow,
+    Color.fromARGB(255, 214, 233, 233),
+    Color(0xFFDAD1FC),
+    Color(0xFFDAD1FC),
+    Commoncolor().yellow,
+    Color.fromARGB(255, 214, 233, 233),
+    Color(0xFFDAD1FC),
+    Color(0xFFDAD1FC),
     Commoncolor().yellow,
     Color.fromARGB(255, 214, 233, 233),
     Color(0xFFDAD1FC),

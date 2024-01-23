@@ -1,9 +1,17 @@
+import 'package:e_learning/features/planning/provider/day_provider.dart';
 import 'package:e_learning/router/router_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) {
+        return DayProvider();
+      },
+    )
+  ], child: const MainApp()));
 }
 
 class MainApp extends StatelessWidget {

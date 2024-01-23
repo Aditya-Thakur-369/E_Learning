@@ -5,9 +5,12 @@ import 'package:e_learning/features/home/screen/fade-animation.dart';
 import 'package:e_learning/router/router.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:e_learning/features/home/screen/fade-animation.dart'
+    as customAnimations;
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,11 +32,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(
                   height: 60,
                 ),
-                const FadeInAnimation(delay: 0.8, child: TopBar()),
+                const customAnimations.FadeInAnimation(
+                    delay: 0.8, child: TopBar()),
                 const SizedBox(
                   height: 20,
                 ),
-                FadeInAnimation(
+                customAnimations.FadeInAnimation(
                   delay: 1,
                   child: Padding(
                     padding: const EdgeInsets.only(left: 20),
@@ -65,27 +69,36 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: SizedBox(
                     height: 270,
                     width: double.infinity,
-                    child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: CourseController().course_list.length,
-                      itemBuilder: (context, index) {
-                        var color1 = CourseController().color_list1[index];
-                        var color = CourseController().color_list[index];
-                        var data = CourseController().course_list[index];
-
-                        return FadeInAnimation(
-                          delay: 1.5,
-                          child: CourseCard(
-                            data: data,
-                            color: color,
-                            color1: color1,
-                          ),
-                        );
-                      },
+                    child: AnimationLimiter(
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: CourseController().course_list.length,
+                        itemBuilder: (context, index) {
+                          var color1 = CourseController().color_list1[index];
+                          var color = CourseController().color_list[index];
+                          var data = CourseController().course_list[index];
+                          return AnimationConfiguration.staggeredList(
+                            position: index,
+                            delay: const Duration(milliseconds: 500),
+                            child: SlideAnimation(
+                              verticalOffset: 200,
+                              curve: Curves.easeInOutSine,
+                              child: customAnimations.FadeInAnimation(
+                                delay: 1.5,
+                                child: CourseCard(
+                                  data: data,
+                                  color: color,
+                                  color1: color1,
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
-                FadeInAnimation(
+                customAnimations.FadeInAnimation(
                   delay: 2,
                   child: Padding(
                     padding:
@@ -122,35 +135,44 @@ class _HomeScreenState extends State<HomeScreen> {
               (context, index) {
                 var color = CourseController().class_color[index];
                 var data = CourseController().class_list[index];
-                return Hero(
-                  tag: index,
-                  transitionOnUserGestures: true,
+                return Material(
                   child: Padding(
                     padding:
                         const EdgeInsets.only(bottom: 10, right: 15, left: 15),
-                    child: FadeInAnimation(
+                    child: customAnimations.FadeInAnimation(
                       delay: 2.5,
-                      child: ClipRRect(
+                      child: Material(
                         child: CupertinoContextMenu(
                           actions: [
                             CupertinoContextMenuAction(
-                              child: Text("View Planning"),
+                              child: const Text("View Planning"),
                               onPressed: () {
                                 context.go(Routes.planningscreen.path);
                                 context.pop();
                               },
                             ),
                             CupertinoContextMenuAction(
-                              child: Text("Back"),
+                              child: const Text("Back"),
                               onPressed: () {
                                 context.pop();
                               },
                             )
                           ],
-                          child: Material(
-                            child: ClassCard(
-                              data: data,
-                              color: color,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(30),
+                            clipBehavior: Clip.antiAlias,
+                            child: Material(
+                              child: Container(
+                                height: 100,
+                                width: 400,
+                                decoration: BoxDecoration(
+                                    color: color,
+                                    borderRadius: BorderRadius.circular(30)),
+                                child: ClassCard(
+                                  data: data,
+                                  color: color,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -346,73 +368,67 @@ class ClassCard extends StatefulWidget {
 class _ClassCardState extends State<ClassCard> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      width: 400,
-      decoration: BoxDecoration(
-          color: widget.color, borderRadius: BorderRadius.circular(30)),
-      child: Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Row(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  widget.data.topic,
-                  style: GoogleFonts.plusJakartaSans(
-                      color: Colors.black,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                ),
-                Row(
-                  children: [
-                    Text(widget.data.status,
-                        style: GoogleFonts.plusJakartaSans(
-                            color: Colors.grey,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w300)),
-                    const SizedBox(
-                      width: 10,
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                widget.data.topic,
+                style: GoogleFonts.plusJakartaSans(
+                    color: Colors.black,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              ),
+              Row(
+                children: [
+                  Text(widget.data.status,
+                      style: GoogleFonts.plusJakartaSans(
+                          color: Colors.grey,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300)),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Container(
+                    height: 30,
+                    width: 30,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: const BoxDecoration(shape: BoxShape.circle),
+                    child: Image.asset(
+                      widget.data.image,
+                      alignment: Alignment.topCenter,
                     ),
-                    Container(
-                      height: 30,
-                      width: 30,
-                      clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(shape: BoxShape.circle),
-                      child: Image.asset(
-                        widget.data.image,
-                        alignment: Alignment.topCenter,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Text(widget.data.name,
-                        style: GoogleFonts.plusJakartaSans(
-                            color: Colors.grey,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w300))
-                  ],
-                )
-              ],
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  Text(widget.data.name,
+                      style: GoogleFonts.plusJakartaSans(
+                          color: Colors.grey,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w300))
+                ],
+              )
+            ],
+          ),
+          const Spacer(),
+          Container(
+            height: 50,
+            width: 50,
+            decoration: BoxDecoration(
+              color: Colors.amber.shade100,
+              shape: BoxShape.circle,
             ),
-            const Spacer(),
-            Container(
-              height: 50,
-              width: 50,
-              decoration: BoxDecoration(
-                color: Colors.amber.shade100,
-                shape: BoxShape.circle,
-              ),
-              child: Image.asset(
-                widget.data.logo,
-                scale: 1.4,
-              ),
-            )
-          ],
-        ),
+            child: Image.asset(
+              widget.data.logo,
+              scale: 1.4,
+            ),
+          )
+        ],
       ),
     );
   }

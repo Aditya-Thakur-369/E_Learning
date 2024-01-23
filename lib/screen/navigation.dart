@@ -28,7 +28,8 @@ class Navigation extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: Container(
-              decoration: BoxDecoration(color: Colors.white),
+              decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.background),
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
               child: SizedBox(
                 height: 50,
@@ -105,8 +106,9 @@ class _CustomNavBarState extends State<CustomNavBar> {
               margin: EdgeInsets.only(left: widget.currentIndex * lineSize),
               height: 80,
               width: lineSize,
-              decoration: const BoxDecoration(
-                color: Colors.black,
+              decoration: BoxDecoration(
+                // color: Colors.black,
+                color: Theme.of(context).colorScheme.onSurface,
                 shape: BoxShape.circle,
               ),
             ),
@@ -143,7 +145,7 @@ class _CustomNavBarState extends State<CustomNavBar> {
                         child: Icon(
                           e,
                           color: widget.currentIndex == index
-                              ? widget.selectedColor
+                              ? Theme.of(context).colorScheme.background
                               : Colors.grey,
                           size: 30,
                         ),
